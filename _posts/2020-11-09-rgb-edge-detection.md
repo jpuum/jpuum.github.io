@@ -63,7 +63,16 @@ Thresholding is mathematically a very simple, but critical operation to get a go
 
 ## Thinning
 
-At this point, we already have detected edges in the image, but they are quite thick. Thinning will thin existing edges, the thickest edges will become thinner and the thinnest edges and dots will disappear. In other words, it keeps the most important edges and gets rid of the most spurious edges. Consequently, we will have a quite nice edge map, which is visually appealing! Let's take a look at the result.
+At this point, we already have detected edges in the image, but they are quite thick. Thinning will thin existing edges, the thickest edges will become thinner and the thinnest edges and dots will disappear. In other words, it keeps the most important edges and gets rid of the most spurious edges. Consequently, we will have a quite nice edge map, which is visually appealing. 
+
+For thinning we use two masks. The two masks are moved over the image and convoluted with an input window at each location of the image.
+
+<div class="imgcap">
+<img src="/images/thin_masks.png">
+<div class="thecap">These masks are used in thinning. The one on the left works in the horizontal and the one on the right works in the vertical direction</div>
+</div>
+
+This convolution gives us the final edge map.
 
 <div class="imgcap">
 <img src="/images/t_models_thinned.jpg">
@@ -71,6 +80,20 @@ At this point, we already have detected edges in the image, but they are quite t
 </div>
 
 ## Comparison and conclusion
+
+[OpenCV Canny](https://docs.opencv.org/master/da/d22/tutorial_py_canny.html) is a popular implementation of Canny edge detection algorithm. I selected it as a comparison as I already had some experience using the implementation. In the paper, OpenCV Canny was used as well in comparison, among some other algorithms.
+
+Comparing the two implementations, the resulting edge maps are not that far away from each other. OpenCV Canny still seems to preserve some edges better, is smoother and has less spurious edges.
+
+<div class="imgcap">
+<p float="left">
+<img src="/images/t_models_thinned.jpg" width="400" />
+<img src="/images/t_models_canny.png" width="400" /> 
+<div class="thecap">Left: Proposed algorithm, Right: OpenCV Canny.</div>
+</div>
+</p>
+
+It was a fun small project to implement the proposed algorithm, and find more intuitive understanding how edge detecting algorithms work in general. 
 
 ## References
 
