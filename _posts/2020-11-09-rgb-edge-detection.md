@@ -14,7 +14,10 @@ Edge detection is an extremely important function in computer vision, as it redu
 
 I chose this image of a beautiful red Tesla Model S as the object on which I applied the edge detection algorithm. Now let's see step by step how the algorithm works.
 
-![alt Original image of Tesla Model S](https://github.com/jpuum/jpuum.github.io/tree/master/images/t_models.jpg "Tesla Model S")
+<div class="imgcap">
+<img src="/images/t_models.jpg">
+<div class="thecap">The original image of Tesla Model S.</div>
+</div>
 
 ## Adaptive median filter
 
@@ -22,13 +25,19 @@ Median filters are popular as their noise reduction capabilities for certain typ
 
 This is what the Tesla looks like after adaptive median filtering, visually not much different from the original in our case.
 
-[Median image here]
+<div class="imgcap">
+<img src="/images/t_models_median.jpg">
+<div class="thecap">Adaptive median filter moved over the image.</div>
+</div>
 
 ## Directional masks
 
 Directional color difference calculation, or applying directional masks is a critical part of the proposed algorithm. Its purpose is to point out areas where abrupt changes of RGB values occur, because that's where the edges are! In general, edges can exist in four directions (0 = horizontal, 45 = ascending diagonal, 90 = vertical, and 135 = descending diagonal), thus we need four masks. The paper proposes the following four masks to be used [1].
 
-[Masks here]
+<div class="imgcap">
+<img src="/images/dirmasks.png">
+<div class="thecap">Four 3x3 directional masks are applied at each window, the one resulting in maximum value is chosen.</div>
+</div>
 
 Before applying the masks, pixels are transformed to single valued attributes, using weighted addition of RGB components.
 
@@ -38,22 +47,31 @@ To apply the masks, the paper proposes a mathematical model to calculate directi
 
 This is what we have after applying the directional masks
 
-[Dirmasks image here]
+<div class="imgcap">
+<img src="/images/t_models_dirmasks.jpg">
+<div class="thecap">Directional masks applied with convolution.</div>
+</div>
 
 ## Thresholding
 
 Thresholding is mathematically a very simple, but critical operation to get a good edge map. Thresholding in our case, we define a threshold, and say every pixel which is smaller than the threshold becomes white, and every other pixel becomes black. The paper suggests the threshold to be defines as T = 1.2t, where t is the average value of maximum color difference or our convolution map. Thresholding gives us already a pretty decent looking edge map!
 
-[Thresholding image here]
+<div class="imgcap">
+<img src="/images/t_models_threshold.jpg">
+<div class="thecap">Thresholded image after directional masks.</div>
+</div>
 
 ## Thinning
 
 At this point, we already have detected edges in the image, but they are quite thick. Thinning will thin existing edges, the thickest edges will become thinner and the thinnest edges and dots will disappear. In other words, it keeps the most important edges and gets rid of the most spurious edges. Consequently, we will have a quite nice edge map, which is visually appealing! Let's take a look at the result.
 
-[Thinned image here]
+<div class="imgcap">
+<img src="/images/t_models_thinned.jpg">
+<div class="thecap">Thinned image after thresholding.</div>
+</div>
 
 ## Comparison and conclusion
 
-# References
+## References
 
 [1] Dutta, Soumya & Chaudhuri, Bidyut. (2009). A Color Edge Detection Algorithm in RGB Color Space. ARTCom 2009 - International Conference on Advances in Recent Technologies in Communication and Computing. 10.1109/ARTCom.2009.72. 
