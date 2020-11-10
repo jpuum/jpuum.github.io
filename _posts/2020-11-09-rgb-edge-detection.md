@@ -14,7 +14,7 @@ Edge detection is an extremely important function in computer vision, as it redu
 
 I chose this image of a beautiful red Tesla Model S as the object on which I applied the edge detection algorithm. Now let's see step by step how the algorithm works.
 
-![Original image of Tesla Model S](https://github.com/jpuum/jpuum.github.io/tree/master/images/t_models.jpg "Tesla Model S")
+![alt Original image of Tesla Model S](https://github.com/jpuum/jpuum.github.io/tree/master/images/t_models.jpg "Tesla Model S")
 
 ## Adaptive median filter
 
