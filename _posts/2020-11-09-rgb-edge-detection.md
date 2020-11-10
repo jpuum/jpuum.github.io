@@ -6,17 +6,17 @@ excerpt: "I will provide a brief review of the paper in this post and compare it
 date:   2020-11-09 22:00:00
 ---
 
-Recently I came across the edge detection algorithm by Chaudhuri and Dutta, as I wanted to develop a deeper understading how edge detection works in theory and practice, especially in RGB color space. Their proposed algorithm uses some techniques which are also in use in today's state-of-the-art methods. I will provide a brief review of the paper in this post and compare it to the state-of-the-art methods of today. My very unoptimized Python version of this algorithm is available in [GitHub].
+Recently I came across the edge detection algorithm by Chaudhuri and Dutta, as I wanted to develop a deeper understading how edge detection works in theory and practice, especially in RGB color space. Their proposed algorithm uses some techniques which are also in use in today's state-of-the-art methods. I will provide a brief review of the paper in this post and compare it to the state-of-the-art methods of today. My very unoptimized Python version of this algorithm is available in [GitHub](https://github.com/jpuum/rgb_edge_detection).
 
 ## Overview
 
 Edge detection is an extremely important function in computer vision, as it reduces the amount of data which has to be processed, while preserving useful structural information about object boundaries. About 90% of the edge information of an RGB image is available in the corresponding grayscale image, but the remaining 10% can be important. The paper proposed an edge detection method which consists of four parts; smoothing, directional color difference calculation, thresholding and thinning [1].
 
-I chose this image of a beautiful red Tesla Model S as the object on which I applied the edge detection algorithm. Now let's see step by step how the algorithm works.
+I chose this image of a beautiful red Tesla Model S as the object on which I applied the edge detection algorithm. Let's see step by step how the algorithm works.
 
 <div class="imgcap">
 <img src="/images/t_models.jpg">
-<div class="thecap">The original image of Tesla Model S.</div>
+<div class="thecap">Figure 1. The original image of Tesla Model S.</div>
 </div>
 
 ## Adaptive median filter
@@ -27,7 +27,7 @@ This is what the Tesla looks like after adaptive median filtering, visually not 
 
 <div class="imgcap">
 <img src="/images/t_models_median.jpg">
-<div class="thecap">Adaptive median filter moved over the image.</div>
+<div class="thecap">Figure 2. Adaptive median filter moved over the image.</div>
 </div>
 
 ## Directional masks
@@ -36,7 +36,7 @@ Directional color difference calculation, or applying directional masks is a cri
 
 <div class="imgcap">
 <img src="/images/dirmasks.png">
-<div class="thecap">Four 3x3 directional masks are applied at each window, the one resulting in maximum value is chosen.</div>
+<div class="thecap">Figure 3. Four 3x3 directional masks are applied at each window, the one resulting in maximum value is chosen.</div>
 </div>
 
 Before applying the masks, pixels are transformed to single valued attributes, using weighted addition of RGB components.
@@ -49,16 +49,16 @@ This is what we have after applying the directional masks
 
 <div class="imgcap">
 <img src="/images/t_models_dirmasks.jpg">
-<div class="thecap">Directional masks applied with convolution.</div>
+<div class="thecap">Figure 4. Directional masks applied with convolution.</div>
 </div>
 
 ## Thresholding
 
-Thresholding is mathematically a very simple, but critical operation to get a good edge map. Thresholding in our case, we define a threshold, and say every pixel which is smaller than the threshold becomes white, and every other pixel becomes black. The paper suggests the threshold to be defines as T = 1.2t, where t is the average value of maximum color difference or our convolution map. Thresholding gives us already a pretty decent looking edge map!
+Thresholding is mathematically a very simple, but critical operation to get a good edge map. Thresholding in our case, we define a threshold, and say every pixel which is smaller than the threshold becomes white, and every pixel equal to or bigger than the threshold becomes black. The paper suggests the threshold to be defined as T = 1.2t, where t is the average value of maximum color difference or our convolution map. Thresholding gives us already a pretty decent looking edge map!
 
 <div class="imgcap">
 <img src="/images/t_models_threshold.jpg">
-<div class="thecap">Thresholded image after directional masks.</div>
+<div class="thecap">Figure 5. Thresholded image after directional masks.</div>
 </div>
 
 ## Thinning
@@ -69,27 +69,27 @@ For thinning we use two masks. The two masks are moved over the image and convol
 
 <div class="imgcap">
 <img src="/images/thin_masks.png">
-<div class="thecap">These masks are used in thinning. The one on the left works in the horizontal and the one on the right works in the vertical direction</div>
+<div class="thecap">Figure 6. These masks are used in thinning. The one on the left works in the horizontal and the one on the right works in the vertical direction</div>
 </div>
 
 This convolution gives us the final edge map.
 
 <div class="imgcap">
 <img src="/images/t_models_thinned.jpg">
-<div class="thecap">Thinned image after thresholding.</div>
+<div class="thecap">Figure 7. Thinned image after thresholding.
 </div>
 
 ## Comparison and conclusion
 
 [OpenCV Canny](https://docs.opencv.org/master/da/d22/tutorial_py_canny.html) is a popular implementation of Canny edge detection algorithm. I selected it as a comparison as I already had some experience using the implementation. In the paper, OpenCV Canny was used as well in comparison, among some other algorithms.
 
-Comparing the two implementations, the resulting edge maps are not that far away from each other. OpenCV Canny still seems to preserve some edges better, is smoother and has less spurious edges.
+Comparing the two implementations, the resulting edge maps are not that far away from each other. OpenCV Canny still seems to preserve some edges better, is smoother and has less spurious edges. This I believe is partly because OpenCV Canny uses [Hysteresis Thresholding](https://scikit-image.org/docs/dev/auto_examples/filters/plot_hysteresis.html), which seems to be more effective than the one proposed in the paper.
 
 <div class="imgcap">
 <p float="left">
 <img src="/images/t_models_thinned.jpg" width="400" />
 <img src="/images/t_models_canny.png" width="400" /> 
-<div class="thecap">Left: Proposed algorithm, Right: OpenCV Canny.</div>
+<div class="thecap">Figure 8. Left: Proposed algorithm, Right: OpenCV Canny.</div>
 </div>
 </p>
 
