@@ -16,7 +16,7 @@ I chose this image of a beautiful red Tesla Model S as the object on which I app
 
 <div class="imgcap">
 <img src="/images/t_models.jpg">
-<div class="thecap">Figure 1. The original image of Tesla Model S.</div>
+<div class="thecap">Figure 1. The original image of Tesla Model S. Photo credit: Nick Dimbleby</div>
 </div>
 
 ## Adaptive median filter
