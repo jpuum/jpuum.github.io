@@ -90,8 +90,8 @@ Comparing the two implementations, the resulting edge maps are not that far away
 <img src="/images/t_models_thinned.jpg" width="400" />
 <img src="/images/t_models_canny.png" width="400" /> 
 <div class="thecap">Figure 8. Left: Proposed algorithm, Right: OpenCV Canny.</div>
-</div>
 </p>
+</div>
 
 It was a fun small project to implement the proposed algorithm, and find more intuitive understanding how edge detecting algorithms work in general. 
 
