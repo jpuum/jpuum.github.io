@@ -1,51 +1,43 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }} – {{ site.description }}</title>
+<head>
+    <title>{{ page.title }}</title>
+    <meta charset='UTF-8'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
-    {% include meta.html %}
+    <meta name='description' content='Gregory Gundersen is a PhD candidate at Princeton.'>
+    <meta name='keywords' content='{{ page.keywords }}'>
+    <meta name='author' content='Gregory Gundersen'>
 
-    <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link href='/css/blog.css' rel='stylesheet'/>
+    <link href='/css/trac.css' rel='stylesheet'/>
+    <link href='/css/markdown.css' rel='stylesheet'/>
 
-    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
-    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
-
-    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
-  </head>
-
-  <body>
-    <div class="wrapper-masthead">
-      <div class="container">
-        <header class="masthead clearfix">
-          <a href="{{ site.baseurl }}/" class="site-avatar"><img src="{{ site.avatar }}" /></a>
-
-          <div class="site-info">
-            <h1 class="site-name"><a href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
-            <p class="site-description">{{ site.description }}</p>
-          </div>
-
-          <nav>
-            <a href="{{ site.baseurl }}/">Blog</a>
-            <a href="{{ site.baseurl }}/about">About</a>
-          </nav>
-        </header>
-      </div>
+    {% include mathjax.html %}
+</head>
+<body>
+<div class='content'>
+    {% include nav.html %}
+    <div class='front-matter'>
+        <div class='wrap'>
+            <h1>{{ page.title }}</h1>
+            <h4>{{ page.subtitle }}</h4>
+            <div class='bylines'>
+                <div class='byline'>
+                    <h3>Published</h3>
+                    <p>{{ page.date |  date: '%d %B %Y' }}</p>
+                </div>
+            </div>
+            <div class='clear'></div>
+        </div>
     </div>
-
-    <div id="main" role="main" class="container">
-      {{ content }}
+    <div class='wrap article'>
+        {{ content }}
     </div>
-
-    <div class="wrapper-footer">
-      <div class="container">
-        <footer class="footer">
-          {% include svg-icons.html %}
-        </footer>
-      </div>
+    <div id='bibliography'>
+        <div class='wrap'>
+            {% bibliography --cited %}
+        </div>
     </div>
-
-    {% include analytics.html %}
-  </body>
+</div>
+</body>
 </html>
