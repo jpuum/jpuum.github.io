@@ -1,0 +1,181 @@
+<html>
+<head>
+    <title>Detecting edges in RGB images</title>
+    <meta charset='UTF-8'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
+
+    <meta name='description' content='Joram Puumala TUNI.'>
+    <meta name='keywords' content=''>
+    <meta name='author' content='Joram Puumala'>
+
+    <link href='/css/blog.css' rel='stylesheet'/>
+    <link href='/css/trac.css' rel='stylesheet'/>
+    <link href='/css/markdown.css' rel='stylesheet'/>
+
+    <script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  jax: ['input/TeX', 'output/HTML-CSS'],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+    extensions: ['color.js']
+  },
+  messageStyle: 'none',
+  'HTML-CSS': { preferredFont: 'TeX', availableFonts: ['STIX','TeX'] }
+});
+</script>
+
+<script src='//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML' type='text/javascript'></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+</head>
+<body>
+<div class='content'>
+    <div class='nav'>
+    <ul class='wrap'>
+        <li><a href='/'>Home</a></li>
+	<li><a href='/blog'>Blog</a></li>
+	<!--<li><a href='/feed.xml'>RSS</a></li>-->
+    </ul>
+</div>
+
+    <div class='front-matter'>
+        <div class='wrap'>
+            <h1>Detecting edges in RGB images</h1>
+            <h4></h4>
+            <div class='bylines'>
+                <div class='byline'>
+                    <h3>Published</h3>
+                    <p>09 November 2020</p>
+                </div>
+            </div>
+            <div class='clear'></div>
+        </div>
+    </div>
+    <div class='wrap article'>
+        <article class="post">
+  <h1>Detecting edges in RGB images</h1>
+
+  <div class="entry">
+    <p>Recently I came across the edge detection algorithm by Chaudhuri and Dutta, as I wanted to develop a deeper understading how edge detection works in theory and practice, especially in RGB color space. Their proposed algorithm uses some techniques which are also in use in today’s state-of-the-art methods. I will provide a brief review of the paper in this post and compare it to the state-of-the-art methods of today. My very unoptimized Python version of this algorithm is available in <a href="https://github.com/jpuum/rgb_edge_detection">GitHub</a>, and the paper can be accessed <a href="https://www.researchgate.net/publication/209566657_A_Color_Edge_Detection_Algorithm_in_RGB_Color_Space">here</a>.</p>
+
+<h2 id="overview">Overview</h2>
+
+<p>Edge detection is an extremely important function in computer vision, as it reduces the amount of data which has to be processed, while preserving useful structural information about object boundaries. About 90% of the edge information of an RGB image is available in the corresponding grayscale image, but the remaining 10% can be important. The paper proposed an edge detection method which consists of four parts; smoothing, directional color difference calculation, thresholding and thinning <a class="citation" href="#duttaedgedetection">(Soumya Dutta, 2009)</a>.</p>
+
+<p>I chose this image of a beautiful red Tesla Model S (Figure $1$) as the object on which I applied the edge detection algorithm. Let’s see step by step how the algorithm works.</p>
+
+<div class="figure">
+    <img src="/images/t_models.jpg" style="width: 60%; display: block; margin: 0 auto;" />
+    <div class="caption">
+        <span class="caption-label">Figure 1.</span> The original image of Tesla Model S. Photo credit: Nick Dimbleby.
+    </div>
+</div>
+
+<h2 id="adaptive-median-filter">Adaptive median filter</h2>
+
+<p>Median filters are popular as their noise reduction capabilities for certain types of noise are great. A traditional median filter moves a window over an image and computes the output pixel as the median of the gray values within the window. One problem with traditional median filter is that it doesn’t do a great job at preserving detail of an image while smoothing the non-impulse noise. An adaptive median filter seeks to fix this problem. Intuitively, a window is moved over an image, checks are made if the current pixel is noise or if it should be kept as it is. Pseudocode of the adaptive median filter is available in the paper <a class="citation" href="#duttaedgedetection">(Soumya Dutta, 2009)</a>.</p>
+
+<p>(Figure $2$) shows what the Tesla looks like after adaptive median filtering, visually not much different from the original in our case.</p>
+
+<div class="figure">
+    <img src="/images/t_models_median.jpg" style="width: 60%; display: block; margin: 0 auto;" />
+    <div class="caption">
+        <span class="caption-label">Figure 2.</span> Adaptive median filter moved over the image.
+    </div>
+</div>
+
+<h2 id="directional-masks">Directional masks</h2>
+
+<p>Directional color difference calculation (image gradients), or application of directional masks, is a critical part of the proposed algorithm. Its purpose is to point out areas where abrupt changes of RGB values occur, because that’s where the edges are! In general, edges can exist in four directions (0 = horizontal, 45 = ascending diagonal, 90 = vertical, and 135 = descending diagonal), thus we need four masks. The paper proposes the following four masks to be used <a class="citation" href="#duttaedgedetection">(Soumya Dutta, 2009)</a>.</p>
+
+<div class="figure">
+    <img src="/images/dirmasks.png" style="width: 80%; display: block; margin: 0 auto;" />
+    <div class="caption">
+        <span class="caption-label">Figure 3.</span> Four 3x3 directional masks are applied at each window, the one resulting in maximum value is chosen.
+    </div>
+</div>
+
+<p>Before applying the masks, pixels are transformed to single valued attributes, using weighted addition of RGB components.</p>
+
+<p>Pixel(i,j) = 2 * red(i,j) + 3 * green(i,j) + 4 * blue(i,j)</p>
+
+<p>To apply the masks, we convolute them with the image. In convolution we flip the masks horizontally and vertically, after which the input window is multiplied elementwise with a mask (not traditional matrix product), and the resulting elements are summed up. We move a window over the image one pixel at a time from top to bottom and left to right. Masks are applied at every window over the image, four times as we have four masks. Consequently, we get four values as a result, of which we choose the biggest one, as the paper suggests. This calculated value is the new pixel value at that spot.</p>
+
+<p>(Figure $4$) shows what we have after applying the directional masks.</p>
+
+<div class="figure">
+    <img src="/images/t_models_dirmasks.jpg" style="width: 60%; display: block; margin: 0 auto;" />
+    <div class="caption">
+        <span class="caption-label">Figure 4.</span> Directional masks applied with convolution.
+    </div>
+</div>
+
+<h2 id="thresholding">Thresholding</h2>
+
+<p>Thresholding is mathematically a very simple, but critical operation to get a good edge map. Thresholding in our case, we define a threshold, and say every pixel which is smaller than the threshold becomes white, and every pixel equal to or bigger than the threshold becomes black. The paper suggests the threshold to be defined as T = 1.2t, where t is the average value of maximum color difference or our convolution map. Thresholding gives us already a pretty decent looking edge map (Figure $5$)!</p>
+
+<div class="figure">
+    <img src="/images/t_models_threshold.jpg" style="width: 60%; display: block; margin: 0 auto;" />
+    <div class="caption">
+        <span class="caption-label">Figure 5.</span> Thresholded image after directional masks.
+    </div>
+</div>
+
+<h2 id="thinning">Thinning</h2>
+
+<p>At this point, we already have detected edges in the image, but they are quite thick. Thinning will thin existing edges, the thickest edges will become thinner and the thinnest edges and dots will disappear. In other words, it keeps the most important edges and gets rid of the most spurious edges. Consequently, we will have a quite nice edge map, which is visually appealing.</p>
+
+<p>For thinning we use two masks. The two masks are moved over the image and convoluted with an input window at each location of the image.</p>
+
+<div class="figure">
+    <img src="/images/thin_masks.png" style="width: 60%; display: block; margin: 0 auto;" />
+    <div class="caption">
+        <span class="caption-label">Figure 6.</span> These masks are used in thinning. The one on the left works in the horizontal and the one on the right works in the vertical direction.
+    </div>
+</div>
+
+<p>This convolution gives us the final edge map (Figure $7$).</p>
+
+<div class="figure">
+    <img src="/images/t_models_thinned.jpg" style="width: 60%; display: block; margin: 0 auto;" />
+    <div class="caption">
+        <span class="caption-label">Figure 7.</span> Thinned image after thresholding.
+    </div>
+</div>
+
+<h2 id="comparison-and-conclusion">Comparison and conclusion</h2>
+
+<p><a href="https://docs.opencv.org/master/da/d22/tutorial_py_canny.html">OpenCV Canny</a> is a popular implementation of Canny edge detection algorithm. I selected it as a comparison as I already had some experience using the implementation. In the paper, OpenCV Canny was used as well in comparison, among some other algorithms.</p>
+
+<div class="figure">
+<p float="left">
+<img src="/images/t_models_thinned.jpg" width="300" />
+<img src="/images/t_models_canny.png" width="300" /> 
+<div class="caption">
+	<span class="caption-label">Figure 8.</span> Left: Proposed algorithm, Right: OpenCV Canny.</div>
+</p>
+</div>
+
+<p>Comparing the two implementations, the resulting edge maps are not that far away from each other. OpenCV Canny still seems to preserve some edges better, is smoother and has less spurious edges. This I believe is partly because OpenCV Canny uses <a href="https://scikit-image.org/docs/dev/auto_examples/filters/plot_hysteresis.html">Hysteresis Thresholding</a>, which seems to be more effective than the one proposed in the paper.</p>
+
+  </div>
+
+  <!--<div class="date">
+    Written on November  9, 2020
+  </div>-->
+
+  
+</article>
+
+    </div>
+    <div id='bibliography'>
+        <div class='wrap'>
+            <ol class="bibliography"><li><span id="duttaedgedetection">Soumya Dutta, B. C. (2009). <i>A color Edge Detection Algorithm in RGB Color Space</i>.</span></li></ol>
+        </div>
+    </div>
+</div>
+</body>
+</html>
