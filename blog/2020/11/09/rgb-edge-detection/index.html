@@ -153,12 +153,10 @@ MathJax.Hub.Config({
 <p><a href="https://docs.opencv.org/master/da/d22/tutorial_py_canny.html">OpenCV Canny</a> is a popular implementation of Canny edge detection algorithm. The algorithm is one of state-of-the-art edge detectors available today. The paper uses Canny as well to compare the methods.</p>
 
 <div class="figure">
-<p float="left">
-<img src="/images/t_models_thinned.jpg" width="300" />
-<img src="/images/t_models_canny.png" width="300" /> 
-<div class="caption">
-	<span class="caption-label">Figure 8.</span> Left: Proposed algorithm, Right: OpenCV Canny.</div>
-</p>
+    <img src="/images/comparison.png" style="width: 60%; display: block; margin: 0 auto;" />
+    <div class="caption">
+        <span class="caption-label">Figure 8.</span> Left: Proposed algorithm, Right: OpenCV Canny.
+    </div>
 </div>
 
 <p>(Figure $8$) summarizes the results. To conclude, the proposed algorithm is able to produce edge maps which are comparable with the state-of-the-art method. OpenCV Canny still does little better job at getting rid of unwanted dots. It also presents the edges finer. I believe these minor differences partly stem from the thresholding algorithm in OpenCV Canny. It uses <a href="https://scikit-image.org/docs/dev/auto_examples/filters/plot_hysteresis.html">Hysteresis Thresholding</a>, which outperforms the one proposed in the paper.</p>
