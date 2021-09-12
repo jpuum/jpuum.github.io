@@ -1,0 +1,113 @@
+<html>
+<head>
+    <title>Bias in image datasets</title>
+    <meta charset='UTF-8'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
+
+    <meta name='description' content='Joram Puumala TUNI.'>
+    <meta name='keywords' content=''>
+    <meta name='author' content='Joram Puumala'>
+
+    <link href='/css/blog.css' rel='stylesheet'/>
+    <link href='/css/trac.css' rel='stylesheet'/>
+    <link href='/css/markdown.css' rel='stylesheet'/>
+
+    <script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  jax: ['input/TeX', 'output/HTML-CSS'],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+    extensions: ['color.js']
+  },
+  messageStyle: 'none',
+  'HTML-CSS': { preferredFont: 'TeX', availableFonts: ['STIX','TeX'] }
+});
+</script>
+
+<script src='//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML' type='text/javascript'></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+</head>
+<body>
+<div class='content'>
+    <div class='nav'>
+    <ul class='wrap'>
+        <li><a href='/'>Home</a></li>
+	<li><a href='/blog'>Blog</a></li>
+	<!--<li><a href='/feed.xml'>RSS</a></li>-->
+    </ul>
+</div>
+
+    <div class='front-matter'>
+        <div class='wrap'>
+            <h1>Bias in image datasets</h1>
+            <h4></h4>
+            <div class='bylines'>
+                <div class='byline'>
+                    <h3>Published</h3>
+                    <p>28 July 2021</p>
+                </div>
+            </div>
+            <div class='clear'></div>
+        </div>
+    </div>
+    <div class='wrap article'>
+        <article class="post">
+  <!--<h1>Bias in image datasets</h1>-->
+
+  <div class="entry">
+    <div class="figure">
+    <img src="/images/b0002_convnetbias/vancomparison.png" style="width: 60%; display: block; margin: 0 auto;" />
+    <div class="caption">
+        <span class="caption-label">Figure 1.</span> (Left) how my ConvNet tries to classify a van after training 50 epochs on a custom dataset of 4000 images. The dataset contains four classes; a van, car, semi and pickup truck. The data is divided equally between the classes, but the images of vans also contain people more often than other classes. Thus the ConvNet learns to associate the waist of the guy with vans. After mitigating this problem by adding more images to the dataset and removing the particular bias, the model (right) learns vans' characteristics. 
+    </div>
+</div>
+
+<p>Bias in datasets cause problems (Figure $1$). Bias tends to be more common in smaller scale datasets because generally there’s less variety in data. However, larger datasets can suffer from bias as well! According to my own experience, the problem is often subtle and difficult to spot with human eye without any insights into the model (what the model sees). If the model struggles to generalize well (gap between training accuracy and test accuracy, validation accuracy might still be good), bias in the dataset might explain it. In the biased case the data generating distributions for training and testing are different. Quite expectedly the model performs poorly during the testing phase as it has not learned the same or even closely similar data distribution. Fortunately some bias in datasets can be detected by observing gradient information flowing into the last convolutional layer of the model. <a href="https://arxiv.org/pdf/1610.02391.pdf">Selvaraju et al.</a> takes advantage of this technique in their Grad-CAM algorithm.</p>
+
+<h2 id="grad-cam-intuition">Grad-CAM intuition</h2>
+
+<p>Before understanding the algorithm intuitively, let’s show the math to which we can map our intuition.</p>
+
+<p>$L_{Grad-CAM}^{c} = ReLU\left ( \sum_{k} \color{blue}{a_{k}^{c}} \color{magenta}{A^{k}} \right )$</p>
+
+<p>where</p>
+
+<p>$\color{blue}{a_{k}^{c}} = \frac{1}{Z} \sum_{i} \sum_{j} \frac{\delta y^{c}}{\delta A_{ij}^{k}}$</p>
+
+<div class="figure">
+    <img src="/images/b0002_convnetbias/nhl_scaled_50.gif" style="width: 60%; display: block; margin: 0 auto;" />
+    <div class="caption">
+        <span class="caption-label">Figure 2.</span> Recording what your ConvNet sees during training through Grad-CAM can help diagnose problems early. 
+    </div>
+</div>
+
+<h2 id="reducing-bias">Reducing bias</h2>
+
+<p>The dataset is biased. It’s time we get rid of the bias as much as we can. What we can do is add images to the dataset which counteract the bias. If we have a dataset of some car models and one of the classes contain clouds in the background while others don’t, it is quite likely that the model will associate the clouds with the specific car model. Now if images of cars of the other classes also contain clouds in the background, the dataset is less biased. Generally, collecting a bigger balanced dataset reduces bias. However, a big dataset does not guarantee an unbiased model. Collecting data and building a dataset is an art in itself.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This essay briefly looks into bias in image datasets. We cover what is bias in image datasets, what causes it, a technique/algorithm to spot it and how to counteract. If you are not familiar with the topic beforehand, this essay helps you get started. Beyond reading I encourage you to code <a href="https://arxiv.org/pdf/1610.02391.pdf">Grad-CAM</a> from scratch to get a deeper understanding why it works.</p>
+
+  </div>
+
+  <!--<div class="date">
+    Written on July 28, 2021
+  </div>-->
+
+  
+</article>
+
+    </div>
+    <div id='bibliography'>
+        <div class='wrap'>
+            <ol class="bibliography"></ol>
+        </div>
+    </div>
+</div>
+</body>
+</html>
