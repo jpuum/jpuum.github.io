@@ -78,7 +78,7 @@ MathJax.Hub.Config({
 
 <script type="math/tex; mode=display">\color{DarkRed}{a_{k}^{c}} = \color{magenta}{\frac{1}{Z} \sum_{i} \sum_{j}} \color{Red}{\frac{\delta y^{c}}{\delta A_{ij}^{k}}} \tag{2}</script>
 
-<p>What’s happening in (1) inside ReLU, we perform a linear combination of activation feature maps $\color{Blue}{A^{k}}$, where each activation feature map is weighed by an importance value \color{DarkRed}{a_{k}^{c}}.</p>
+<p>What’s happening in (1) inside ReLU, we perform a linear combination of activation feature maps $\color{Blue}{A^{k}}$, where each activation feature map is weighed by an importance value $\color{DarkRed}{a_{k}^{c}}$. This importance value tells how important a feature map $\color{DarkRed}{k}$ is for a target class $\color{DarkRed}{c}$ when making a prediction. The linear combination of activation feature maps is likely to contain negative and positive values. We are only interested in the features which have a positive influence on the class of interest $\color{Red}{y^{c}}$.</p>
 
 <div class="figure">
     <img src="/images/b0002_convnetbias/nhl_scaled_50.gif" style="width: 60%; display: block; margin: 0 auto;" />
