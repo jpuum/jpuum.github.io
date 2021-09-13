@@ -1,38 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="https://jpuum.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://jpuum.github.io/" rel="alternate" type="text/html" /><updated>2021-09-13T20:55:50+03:00</updated><id>https://jpuum.github.io/feed.xml</id><entry><title type="html">Bias in image datasets</title><link href="https://jpuum.github.io/blog/2021/09/13/bias-in-image-data/" rel="alternate" type="text/html" title="Bias in image datasets" /><published>2021-09-13T00:00:00+03:00</published><updated>2021-09-13T00:00:00+03:00</updated><id>https://jpuum.github.io/blog/2021/09/13/bias-in-image-data</id><content type="html" xml:base="https://jpuum.github.io/blog/2021/09/13/bias-in-image-data/">&lt;div class=&quot;figure&quot;&gt;
-    &lt;img src=&quot;/images/b0002_convnetbias/vancomparison.png&quot; style=&quot;width: 60%; display: block; margin: 0 auto;&quot; /&gt;
-    &lt;div class=&quot;caption&quot;&gt;
-        &lt;span class=&quot;caption-label&quot;&gt;Figure 1.&lt;/span&gt; (Left) how my ConvNet tries to classify a van after training 50 epochs on a custom dataset of 4000 images. The dataset contains four classes; a van, car, semi and pickup truck. The data is divided equally between the classes, but the images of vans also contain people more often than other classes. Thus the ConvNet learns to associate the waist of the guy with vans. After mitigating this problem by adding more images to the dataset and removing the particular bias, the model (right) learns vans' characteristics. 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="https://jpuum.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://jpuum.github.io/" rel="alternate" type="text/html" /><updated>2021-09-13T20:58:05+03:00</updated><id>https://jpuum.github.io/feed.xml</id><entry><title type="html">Bias in image datasets</title><link href="https://jpuum.github.io/blog/2021/09/13/bias-in-image-data/" rel="alternate" type="text/html" title="Bias in image datasets" /><published>2021-09-13T00:00:00+03:00</published><updated>2021-09-13T00:00:00+03:00</updated><id>https://jpuum.github.io/blog/2021/09/13/bias-in-image-data</id><content type="html" xml:base="https://jpuum.github.io/blog/2021/09/13/bias-in-image-data/">&lt;div class='figure'&gt;
+    &lt;img src=&quot;/images/b0002_convnetbias/vancomparison.png&quot;
+         style=&quot;width: 60%; display: block; margin: 0 auto;&quot;/&gt;
+    &lt;div class='caption'&gt;
+        &lt;span class='caption-label'&gt;Figure 1.&lt;/span&gt; (Left) how my ConvNet tries to classify a van after training 50 epochs on a custom dataset of 4000 images. The dataset contains four classes; a van, car, semi and pickup truck. The data is divided equally between the classes, but the images of vans also contain people more often than other classes. Thus the ConvNet learns to associate the waist of the guy with vans. After mitigating this problem by adding more images to the dataset and removing the particular bias, the model (right) learns vans' characteristics. 
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Bias in datasets cause problems (Figure $1$). Bias tends to be more common in smaller scale datasets because generally there’s less variety in data. However, larger datasets can suffer from bias as well! According to my own experience, the problem is often subtle and difficult to spot with human eye without any insights into the model (what the model sees). If the model struggles to generalize well (gap between training accuracy and test accuracy, validation accuracy might still be good), bias in the dataset might explain it. In the biased case the data generating distributions for training and testing are different. Quite expectedly the model performs poorly during the testing phase as it has not learned the same or even closely similar data distribution. Fortunately some bias in datasets can be detected by observing gradient information flowing into the last convolutional layer of the model. &lt;a href=&quot;https://arxiv.org/pdf/1610.02391.pdf&quot;&gt;Selvaraju et al.&lt;/a&gt; takes advantage of this technique in their Grad-CAM algorithm.&lt;/p&gt;
+Bias in datasets cause problems (Figure $1$). Bias tends to be more common in smaller scale datasets because generally there's less variety in data. However, larger datasets can suffer from bias as well! According to my own experience, the problem is often subtle and difficult to spot with human eye without any insights into the model (what the model sees). If the model struggles to generalize well (gap between training accuracy and test accuracy, validation accuracy might still be good), bias in the dataset might explain it. In the biased case the data generating distributions for training and testing are different. Quite expectedly the model performs poorly during the testing phase as it has not learned the same or even closely similar data distribution. Fortunately some bias in datasets can be detected by observing gradient information flowing into the last convolutional layer of the model. [Selvaraju et al.](https://arxiv.org/pdf/1610.02391.pdf) takes advantage of this technique in their Grad-CAM algorithm.
 
-&lt;h2 id=&quot;grad-cam-intuition&quot;&gt;Grad-CAM intuition&lt;/h2&gt;
+## Grad-CAM intuition
 
-&lt;p&gt;Before understanding the algorithm intuitively, let’s show the math to which we can map our intuition.&lt;/p&gt;
+Before understanding the algorithm intuitively, let's show the math to which we can map our intuition.
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{Grad-CAM}^{c} = ReLU\left ( \sum_{k} \color{Red}{a_{k}^{c}} \color{Blue}{A^{k}} \right ) \tag{1}&lt;/script&gt;
+$$L_{Grad-CAM}^{c} = ReLU\left ( \sum_{k} \color{Red}{a_{k}^{c}} \color{Blue}{A^{k}} \right ) \tag{1}$$
 
-&lt;p&gt;where&lt;/p&gt;
+where
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\color{Red}{a_{k}^{c}} = \color{magenta}{\frac{1}{Z} \sum_{i} \sum_{j}} \color{DarkRed}{\frac{\delta y^{c}}{\delta A_{ij}^{k}}} \tag{2}&lt;/script&gt;
+$$\color{Red}{a_{k}^{c}} = \color{magenta}{\frac{1}{Z} \sum_{i} \sum_{j}} \color{DarkRed}{\frac{\delta y^{c}}{\delta A_{ij}^{k}}} \tag{2}$$
 
-&lt;p&gt;Here $\color{Blue}{A^{k}}$ represents…&lt;/p&gt;
+Here $\color{Blue}{A^{k}}$ represents...
 
-&lt;div class=&quot;figure&quot;&gt;
-    &lt;img src=&quot;/images/b0002_convnetbias/nhl_scaled_50.gif&quot; style=&quot;width: 60%; display: block; margin: 0 auto;&quot; /&gt;
-    &lt;div class=&quot;caption&quot;&gt;
-        &lt;span class=&quot;caption-label&quot;&gt;Figure 2.&lt;/span&gt; Recording what your ConvNet sees during training through Grad-CAM can help diagnose problems early. 
+&lt;div class='figure'&gt;
+    &lt;img src=&quot;/images/b0002_convnetbias/nhl_scaled_50.gif&quot;
+         style=&quot;width: 60%; display: block; margin: 0 auto;&quot;/&gt;
+    &lt;div class='caption'&gt;
+        &lt;span class='caption-label'&gt;Figure 2.&lt;/span&gt; Recording what your ConvNet sees during training through Grad-CAM can help diagnose problems early. 
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;reducing-bias&quot;&gt;Reducing bias&lt;/h2&gt;
+## Reducing bias
 
-&lt;p&gt;The dataset is biased. It’s time we get rid of the bias as much as we can. What we can do is add images to the dataset which counteract the bias. If we have a dataset of some car models and one of the classes contain clouds in the background while others don’t, it is quite likely that the model will associate the clouds with the specific car model. Now if images of cars of the other classes also contain clouds in the background, the dataset is less biased. Generally, collecting a bigger balanced dataset reduces bias. However, a big dataset does not guarantee an unbiased model. Collecting data and building a dataset is an art in itself.&lt;/p&gt;
+The dataset is biased. It's time we get rid of the bias as much as we can. What we can do is add images to the dataset which counteract the bias. If we have a dataset of some car models and one of the classes contain clouds in the background while others don't, it is quite likely that the model will associate the clouds with the specific car model. Now if images of cars of the other classes also contain clouds in the background, the dataset is less biased. Generally, collecting a bigger balanced dataset reduces bias. However, a big dataset does not guarantee an unbiased model. Collecting data and building a dataset is an art in itself.
 
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+## Conclusion
 
-&lt;p&gt;This essay briefly looks into bias in image datasets. We cover what is bias in image datasets, what causes it, a technique/algorithm to spot it and how to counteract. If you are not familiar with the topic beforehand, this essay helps you get started. Beyond reading I encourage you to code &lt;a href=&quot;https://arxiv.org/pdf/1610.02391.pdf&quot;&gt;Grad-CAM&lt;/a&gt; from scratch to get a deeper understanding why it works.&lt;/p&gt;</content><author><name></name></author></entry><entry><title type="html">Detecting edges in RGB images</title><link href="https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection/" rel="alternate" type="text/html" title="Detecting edges in RGB images" /><published>2020-11-09T00:00:00+02:00</published><updated>2020-11-09T00:00:00+02:00</updated><id>https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection</id><content type="html" xml:base="https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection/">This post provides a brief review of a [paper](https://www.researchgate.net/publication/209566657_A_Color_Edge_Detection_Algorithm_in_RGB_Color_Space) by Dutta and Chaudhuri. The paper proposes an algorithm for RGB image edge detection. The proposed algorithm uses functions also in use in state-of-the-art methods today. For demonstration, I code the [algorithm](https://github.com/jpuum/rgb_edge_detection) from scratch and compare it with state-of-the-art methods.
+This essay briefly looks into bias in image datasets. We cover what is bias in image datasets, what causes it, a technique/algorithm to spot it and how to counteract. If you are not familiar with the topic beforehand, this essay helps you get started. Beyond reading I encourage you to code [Grad-CAM](https://arxiv.org/pdf/1610.02391.pdf) from scratch to get a deeper understanding why it works.</content><author><name></name></author></entry><entry><title type="html">Detecting edges in RGB images</title><link href="https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection/" rel="alternate" type="text/html" title="Detecting edges in RGB images" /><published>2020-11-09T00:00:00+02:00</published><updated>2020-11-09T00:00:00+02:00</updated><id>https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection</id><content type="html" xml:base="https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection/">This post provides a brief review of a [paper](https://www.researchgate.net/publication/209566657_A_Color_Edge_Detection_Algorithm_in_RGB_Color_Space) by Dutta and Chaudhuri. The paper proposes an algorithm for RGB image edge detection. The proposed algorithm uses functions also in use in state-of-the-art methods today. For demonstration, I code the [algorithm](https://github.com/jpuum/rgb_edge_detection) from scratch and compare it with state-of-the-art methods.
 
 ## Overview
 
