@@ -72,11 +72,13 @@ MathJax.Hub.Config({
 
 <p>Before understanding the algorithm intuitively, let’s show the math to which we can map our intuition.</p>
 
-<p>$L_{Grad-CAM}^{c} = ReLU\left ( \sum_{k} \color{blue}{a_{k}^{c}} \color{magenta}{A^{k}} \right )$</p>
+<script type="math/tex; mode=display">L_{Grad-CAM}^{c} = ReLU\left ( \sum_{k} \color{Red}{a_{k}^{c}} \color{Blue}{A^{k}} \right )</script>
 
 <p>where</p>
 
-<p>$\color{blue}{a_{k}^{c}} = \frac{1}{Z} \sum_{i} \sum_{j} \frac{\delta y^{c}}{\delta A_{ij}^{k}}$</p>
+<script type="math/tex; mode=display">\color{Red}{a_{k}^{c}} = \color{magenta}{\frac{1}{Z} \sum_{i} \sum_{j}} \color{Orchid}{\frac{\delta y^{c}}{\delta A_{ij}^{k}}}</script>
+
+<p>Here $\color{Blue}{A^{k}}$ represents…</p>
 
 <div class="figure">
     <img src="/images/b0002_convnetbias/nhl_scaled_50.gif" style="width: 60%; display: block; margin: 0 auto;" />
