@@ -68,9 +68,11 @@ MathJax.Hub.Config({
 
 <p>Bias in datasets cause problems (Figure $1$). Bias tends to be more common in smaller scale datasets because generally there’s less variety in data. However, larger datasets can suffer from bias as well! According to my own experience, the problem is often subtle and difficult to spot with human eye without any insights into the model (what the model sees). If the model struggles to generalize well (gap between training accuracy and test accuracy, validation accuracy might still be good), bias in the dataset might explain it. In the biased case the data generating distributions for training and testing are different. Quite expectedly the model performs poorly during the testing phase as it has not learned the same or even closely similar data distribution. Fortunately some bias in datasets can be detected by observing gradient information flowing into the last convolutional layer of the model. <a href="https://arxiv.org/pdf/1610.02391.pdf">Selvaraju et al.</a> takes advantage of this technique in their Grad-CAM algorithm.</p>
 
-<h2 id="grad-cam-intuition">Grad-CAM intuition</h2>
+<h2 id="grad-cam-algorithm">Grad-CAM algorithm</h2>
 
-<p>Before understanding the algorithm intuitively, let’s show the math to which we can map our intuition.</p>
+<p>It is known that deeper representations in a ConvNet capture higher-level information from images such as object parts. Grad-CAM utilizes information from the gradients flowing into the last convolutional layer, where the deepest representations reside. The algorithm could be modified to use information from earlier convolutional layers as well, but the last convolutional layer decision making is visually most similar to how humans recognize objects. Intuitively, Grad-CAM looks at an image and tells how important each pixel in the image is for classifying it as a particular class (In Figure $2$, ConvNet is mainly focusing on logos and stripes to classify between the teams).</p>
+
+<p>The math behind the algorithm is quite elegant. Grad-CAM is defined as</p>
 
 <script type="math/tex; mode=display">L_{Grad-CAM}^{c} = ReLU\left ( \sum_{k} \color{DarkRed}{a_{k}^{c}} \color{Blue}{A^{k}} \right ) \tag{1}</script>
 
@@ -80,12 +82,12 @@ MathJax.Hub.Config({
 
 <p>What’s happening in (1) inside the Rectified Linear Unit (<em>ReLU</em>), we perform a linear combination of activation feature maps $\color{Blue}{A^{k}}$, where each activation feature map is weighed by an importance value $\color{DarkRed}{a_{k}^{c}}$. This importance value tells how important a feature map $\color{DarkRed}{k}$ is for a target class $\color{DarkRed}{c}$ when making a prediction. The linear combination of activation feature maps is likely to contain both negative and positive values. We are only interested in the features which have a <strong>positive influence</strong> on the class of interest $\color{Red}{y^{c}}$. Consequently, we apply <em>ReLU</em> to the result to turn negative values into zeroes. This results in a coarse heatmap which is the same size as the activation feature maps in the last convolutional layer.</p>
 
-<p>So far very straightforward. Now what are the importance values $\color{DarkRed}{a_{k}^{c}}$? In $\color{Red}{\frac{\delta y^{c}}{\delta A_{ij}^{k}}}$ we use calculus to calculate the gradient of the score $\color{Red}{y^{c}}$ with respect to feature map activations $\color{red}{\delta A_{ij}^{k}}$. In other words, we are checking how much a feature map contributed to the prediction of the class of interest. These values are <em>global-average pooled</em> in $\color{magenta}{\frac{1}{Z} \sum_{i} \sum_{j}}$ to obtain the final importance value, which tells us how we should weigh the specific activation feature map.</p>
+<p>So far very straightforward. Now what are the importance values $\color{DarkRed}{a_{k}^{c}}$? In $\color{Red}{\frac{\delta y^{c}}{\delta A_{ij}^{k}}}$ we use calculus to calculate the gradient of the score $\color{Red}{y^{c}}$ with respect to feature map activations $\color{red}{A_{ij}^{k}}$. In other words, we are checking how much a feature map contributed to the prediction of the class of interest. These values are <em>global-average pooled</em> in $\color{magenta}{\frac{1}{Z} \sum_{i} \sum_{j}}$ to obtain the final importance value, which tells us how we should weigh the specific activation feature map.</p>
 
 <div class="figure">
     <img src="/images/b0002_convnetbias/nhl_scaled_50.gif" style="width: 60%; display: block; margin: 0 auto;" />
     <div class="caption">
-        <span class="caption-label">Figure 2.</span> Recording what your ConvNet sees during training through Grad-CAM can help diagnose problems early. 
+        <span class="caption-label">Figure 2.</span> Recording what your ConvNet sees during training through Grad-CAM can help diagnose problems early. Red regions contain pixels that are important in decision making for a particular class in the example images, while blue regions do not contribute to decision making for the particular class.
     </div>
 </div>
 
