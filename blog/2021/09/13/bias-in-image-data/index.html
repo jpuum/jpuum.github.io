@@ -72,6 +72,13 @@ MathJax.Hub.Config({
 
 <p>It is known that deeper representations in a ConvNet capture higher-level information from images such as object parts. Grad-CAM utilizes information from the gradients flowing into the last convolutional layer, where the deepest representations reside. The algorithm could be modified to use information from earlier convolutional layers as well, but the last convolutional layer decision making is visually most similar to how humans recognize objects. Intuitively, Grad-CAM looks at an image and tells how important each pixel in the image is for classifying it as a particular class (In Figure $2$, ConvNet is mainly focusing on logos and stripes to classify between the teams).</p>
 
+<div class="figure">
+    <img src="/images/b0002_convnetbias/nhl_scaled_50.gif" style="width: 60%; display: block; margin: 0 auto;" />
+    <div class="caption">
+        <span class="caption-label">Figure 2.</span> Recording what your ConvNet sees during training through Grad-CAM can help diagnose problems early. Red regions contain pixels that are important in decision making for a particular class in the example images, while blue regions do not contribute to decision making for the particular class.
+    </div>
+</div>
+
 <p>The math behind the algorithm is quite elegant. Grad-CAM is defined as</p>
 
 <script type="math/tex; mode=display">L_{Grad-CAM}^{c} = ReLU\left ( \sum_{k} \color{DarkRed}{a_{k}^{c}} \color{Blue}{A^{k}} \right ) \tag{1}</script>
@@ -82,14 +89,7 @@ MathJax.Hub.Config({
 
 <p>What’s happening in (1) inside the Rectified Linear Unit (<em>ReLU</em>), we perform a linear combination of activation feature maps $\color{Blue}{A^{k}}$, where each activation feature map is weighed by an importance value $\color{DarkRed}{a_{k}^{c}}$. This importance value tells how important a feature map $\color{DarkRed}{k}$ is for a target class $\color{DarkRed}{c}$ when making a prediction. The linear combination of activation feature maps is likely to contain both negative and positive values. We are only interested in the features which have a <strong>positive influence</strong> on the class of interest $\color{Red}{y^{c}}$. Consequently, we apply <em>ReLU</em> to the result to turn negative values into zeroes. This results in a coarse heatmap which is the same size as the activation feature maps in the last convolutional layer.</p>
 
-<p>So far very straightforward. Now what are the importance values $\color{DarkRed}{a_{k}^{c}}$? In $\color{Red}{\frac{\delta y^{c}}{\delta A_{ij}^{k}}}$ we use calculus to calculate the gradient of the score $\color{Red}{y^{c}}$ with respect to feature map activations $\color{red}{A_{ij}^{k}}$. In other words, we are checking how much a feature map contributed to the prediction of the class of interest. These values are <em>global-average pooled</em> in $\color{magenta}{\frac{1}{Z} \sum_{i} \sum_{j}}$ to obtain the final importance value, which tells us how we should weigh the specific activation feature map.</p>
-
-<div class="figure">
-    <img src="/images/b0002_convnetbias/nhl_scaled_50.gif" style="width: 60%; display: block; margin: 0 auto;" />
-    <div class="caption">
-        <span class="caption-label">Figure 2.</span> Recording what your ConvNet sees during training through Grad-CAM can help diagnose problems early. Red regions contain pixels that are important in decision making for a particular class in the example images, while blue regions do not contribute to decision making for the particular class.
-    </div>
-</div>
+<p>So far very straightforward. Now what are the importance values $\color{DarkRed}{a_{k}^{c}}$? In $\color{Red}{\frac{\delta y^{c}}{\delta A_{ij}^{k}}}$ we use calculus to calculate the gradient of the score $\color{Red}{y^{c}}$ with respect to feature map activations $\color{red}{A_{ij}^{k}}$. In other words, we are checking how much a feature map contributed to the prediction of the class of interest. These values are <em>global-average pooled</em> in $\color{magenta}{\frac{1}{Z} \sum_{i} \sum_{j}}$ to obtain the final importance value, which tells us how we should weigh the specific activation feature map <a class="citation" href="#gradcam">(<i>Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization</i>, 2019)</a>.</p>
 
 <h2 id="reducing-bias">Reducing bias</h2>
 
@@ -97,7 +97,7 @@ MathJax.Hub.Config({
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>This essay briefly looks into bias in image datasets. We cover what is bias in image datasets, what causes it, a technique/algorithm to spot it and how to counteract. If you are not familiar with the topic beforehand, this essay helps you get started. Beyond reading I encourage you to code <a href="https://arxiv.org/pdf/1610.02391.pdf">Grad-CAM</a> from scratch to get a deeper understanding why it works.</p>
+<p>This essay briefly looks into bias in image datasets and summarizes Grad-CAM algorithm. We cover what is bias in image datasets, what causes it, a technique/algorithm to spot it and how to counteract. If you are not familiar with the topic beforehand, this essay helps you get started. Beyond reading I encourage you to code <a href="https://arxiv.org/pdf/1610.02391.pdf">Grad-CAM</a> from scratch to get a deeper understanding why it works.</p>
 
   </div>
 
@@ -111,7 +111,7 @@ MathJax.Hub.Config({
     </div>
     <div id='bibliography'>
         <div class='wrap'>
-            <ol class="bibliography"></ol>
+            <ol class="bibliography"><li><span id="gradcam"><i>Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization</i>. (2019).</span></li></ol>
         </div>
     </div>
 </div>
