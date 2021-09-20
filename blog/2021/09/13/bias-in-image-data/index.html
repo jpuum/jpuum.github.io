@@ -1,3 +1,66 @@
+<html>
+<head>
+    <title>Bias in image datasets</title>
+    <meta charset='UTF-8'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
+
+    <meta name='description' content='Joram Puumala TUNI.'>
+    <meta name='keywords' content=''>
+    <meta name='author' content='Joram Puumala'>
+
+    <link href='/css/blog.css' rel='stylesheet'/>
+    <link href='/css/trac.css' rel='stylesheet'/>
+    <link href='/css/markdown.css' rel='stylesheet'/>
+
+    <script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  jax: ['input/TeX', 'output/HTML-CSS'],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+    extensions: ['color.js']
+  },
+  messageStyle: 'none',
+  'HTML-CSS': { preferredFont: 'TeX', availableFonts: ['STIX','TeX'] }
+});
+</script>
+
+<script src='//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML' type='text/javascript'></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+</head>
+<body>
+<div class='content'>
+    <div class='nav'>
+    <ul class='wrap'>
+        <li><a href='/'>Home</a></li>
+	<li><a href='/blog'>Blog</a></li>
+	<!--<li><a href='/feed.xml'>RSS</a></li>-->
+    </ul>
+</div>
+
+    <div class='front-matter'>
+        <div class='wrap'>
+            <h1>Bias in image datasets</h1>
+            <h4></h4>
+            <div class='bylines'>
+                <div class='byline'>
+                    <h3>Published</h3>
+                    <p>13 September 2021</p>
+                </div>
+            </div>
+            <div class='clear'></div>
+        </div>
+    </div>
+    <div class='wrap article'>
+        <article class="post">
+  <!--<h1>Bias in image datasets</h1>-->
+
+  <div class="entry">
+    <p>Bias in image data, as described by <a href="https://arxiv.org/pdf/1610.02391.pdf">Selvaraju et al.</a>, refers to a class exclusively containing visual information not relevant to the class prediction. A ConvNet model trained on a vehicle dataset can learn the characteristics of different vehicles if it is focusing on vehicles. Now imagine images of vans exclusively containing people. The model likely learns to associate some parts of the people with vans (Figure $1$), and thus confidently classifies people as vans.</p>
+
 <div class="figure">
     <img src="/images/b0002_convnetbias/vancomparison.png" style="width: 60%; display: block; margin: 0 auto;" />
     <div class="caption">
@@ -37,3 +100,22 @@
 <h2 id="conclusion">Conclusion</h2>
 
 <p>This essay briefly talks about bias in image datasets and summarizes Grad-CAM algorithm. Bias in this context is a problem more common in smaller datasets. It affects ConvNet’s generalization ability and is often hard to detect without understanding what the model sees because of its subtle nature. Grad-CAM algorithm creates heatmaps of the same size as the original images, which visually show the regions that contributed to the prediction most. After diagnosing the bias, what follows is a straightforward method to reduce it. If you are not familiar with bias in image data already, this essay helps you get started. Beyond reading I encourage you to code <a href="https://arxiv.org/pdf/1610.02391.pdf">Grad-CAM</a> from scratch to get a deeper understanding why it works.</p>
+
+  </div>
+
+  <!--<div class="date">
+    Written on September 13, 2021
+  </div>-->
+
+  
+</article>
+
+    </div>
+    <div id='bibliography'>
+        <div class='wrap'>
+            <ol class="bibliography"><li><span id="gradcam"><i>Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization</i>. (2019).</span></li></ol>
+        </div>
+    </div>
+</div>
+</body>
+</html>

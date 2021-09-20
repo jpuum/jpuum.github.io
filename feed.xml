@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="https://jpuum.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://jpuum.github.io/" rel="alternate" type="text/html" /><updated>2021-09-20T17:17:56+03:00</updated><id>https://jpuum.github.io/feed.xml</id><entry><title type="html"></title><link href="https://jpuum.github.io/blog/2021/09/20/2021-09-13-bias-in-image-data/" rel="alternate" type="text/html" title="" /><published>2021-09-20T17:17:56+03:00</published><updated>2021-09-20T17:17:56+03:00</updated><id>https://jpuum.github.io/blog/2021/09/20/2021-09-13-bias-in-image-data</id><content type="html" xml:base="https://jpuum.github.io/blog/2021/09/20/2021-09-13-bias-in-image-data/">&lt;div class=&quot;figure&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="https://jpuum.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://jpuum.github.io/" rel="alternate" type="text/html" /><updated>2021-09-20T17:18:34+03:00</updated><id>https://jpuum.github.io/feed.xml</id><entry><title type="html">Bias in image datasets</title><link href="https://jpuum.github.io/blog/2021/09/13/bias-in-image-data/" rel="alternate" type="text/html" title="Bias in image datasets" /><published>2021-09-13T00:00:00+03:00</published><updated>2021-09-13T00:00:00+03:00</updated><id>https://jpuum.github.io/blog/2021/09/13/bias-in-image-data</id><content type="html" xml:base="https://jpuum.github.io/blog/2021/09/13/bias-in-image-data/">&lt;p&gt;Bias in image data, as described by &lt;a href=&quot;https://arxiv.org/pdf/1610.02391.pdf&quot;&gt;Selvaraju et al.&lt;/a&gt;, refers to a class exclusively containing visual information not relevant to the class prediction. A ConvNet model trained on a vehicle dataset can learn the characteristics of different vehicles if it is focusing on vehicles. Now imagine images of vans exclusively containing people. The model likely learns to associate some parts of the people with vans (Figure $1$), and thus confidently classifies people as vans.&lt;/p&gt;
+
+&lt;div class=&quot;figure&quot;&gt;
     &lt;img src=&quot;/images/b0002_convnetbias/vancomparison.png&quot; style=&quot;width: 60%; display: block; margin: 0 auto;&quot; /&gt;
     &lt;div class=&quot;caption&quot;&gt;
         &lt;span class=&quot;caption-label&quot;&gt;Figure 1.&lt;/span&gt; (Left) how my ConvNet tries to classify a van after training 50 epochs on a custom dataset of 4000 images. The dataset contains four classes; a van, car, semi and pickup truck. The data is divided equally between the classes, but the images of vans also contain people more often than other classes. Thus the ConvNet learns to associate the waist of the guy with vans. After mitigating this problem by adding more images to the dataset and removing the particular bias, the model (right) learns vans' characteristics. 
@@ -36,104 +38,112 @@
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;This essay briefly talks about bias in image datasets and summarizes Grad-CAM algorithm. Bias in this context is a problem more common in smaller datasets. It affects ConvNet’s generalization ability and is often hard to detect without understanding what the model sees because of its subtle nature. Grad-CAM algorithm creates heatmaps of the same size as the original images, which visually show the regions that contributed to the prediction most. After diagnosing the bias, what follows is a straightforward method to reduce it. If you are not familiar with bias in image data already, this essay helps you get started. Beyond reading I encourage you to code &lt;a href=&quot;https://arxiv.org/pdf/1610.02391.pdf&quot;&gt;Grad-CAM&lt;/a&gt; from scratch to get a deeper understanding why it works.&lt;/p&gt;</content><author><name></name></author></entry><entry><title type="html">Detecting edges in RGB images</title><link href="https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection/" rel="alternate" type="text/html" title="Detecting edges in RGB images" /><published>2020-11-09T00:00:00+02:00</published><updated>2020-11-09T00:00:00+02:00</updated><id>https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection</id><content type="html" xml:base="https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection/">&lt;p&gt;This post provides a brief review of a &lt;a href=&quot;https://www.researchgate.net/publication/209566657_A_Color_Edge_Detection_Algorithm_in_RGB_Color_Space&quot;&gt;paper&lt;/a&gt; by Dutta and Chaudhuri. The paper proposes an algorithm for RGB image edge detection. The proposed algorithm uses functions also in use in state-of-the-art methods today. For demonstration, I code the &lt;a href=&quot;https://github.com/jpuum/rgb_edge_detection&quot;&gt;algorithm&lt;/a&gt; from scratch and compare it with state-of-the-art methods.&lt;/p&gt;
+&lt;p&gt;This essay briefly talks about bias in image datasets and summarizes Grad-CAM algorithm. Bias in this context is a problem more common in smaller datasets. It affects ConvNet’s generalization ability and is often hard to detect without understanding what the model sees because of its subtle nature. Grad-CAM algorithm creates heatmaps of the same size as the original images, which visually show the regions that contributed to the prediction most. After diagnosing the bias, what follows is a straightforward method to reduce it. If you are not familiar with bias in image data already, this essay helps you get started. Beyond reading I encourage you to code &lt;a href=&quot;https://arxiv.org/pdf/1610.02391.pdf&quot;&gt;Grad-CAM&lt;/a&gt; from scratch to get a deeper understanding why it works.&lt;/p&gt;</content><author><name></name></author></entry><entry><title type="html">Detecting edges in RGB images</title><link href="https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection/" rel="alternate" type="text/html" title="Detecting edges in RGB images" /><published>2020-11-09T00:00:00+02:00</published><updated>2020-11-09T00:00:00+02:00</updated><id>https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection</id><content type="html" xml:base="https://jpuum.github.io/blog/2020/11/09/rgb-edge-detection/">This post provides a brief review of a [paper](https://www.researchgate.net/publication/209566657_A_Color_Edge_Detection_Algorithm_in_RGB_Color_Space) by Dutta and Chaudhuri. The paper proposes an algorithm for RGB image edge detection. The proposed algorithm uses functions also in use in state-of-the-art methods today. For demonstration, I code the [algorithm](https://github.com/jpuum/rgb_edge_detection) from scratch and compare it with state-of-the-art methods.
 
-&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+## Overview
 
-&lt;p&gt;Edge detection is a fundamental tool in computer vision. It reduces data, while preserving useful structural information about object boundaries. A greyscale image contains about 90% of the edge information of its RGB correspondence; the remaining 10% can be crucial. The paper proposes a method which consists of smoothing, directional color difference calculation, thresholding and thinning &lt;a class=&quot;citation&quot; href=&quot;#duttaedgedetection&quot;&gt;(Soumya Dutta, 2009)&lt;/a&gt;.&lt;/p&gt;
+Edge detection is a fundamental tool in computer vision. It reduces data, while preserving useful structural information about object boundaries. A greyscale image contains about 90% of the edge information of its RGB correspondence; the remaining 10% can be crucial. The paper proposes a method which consists of smoothing, directional color difference calculation, thresholding and thinning {% cite duttaedgedetection %}.
 
-&lt;p&gt;To test the algorithm, I use an image of a beautiful red Tesla Model S (Figure $1$). I will go through the algorithm step by step.&lt;/p&gt;
+To test the algorithm, I use an image of a beautiful red Tesla Model S (Figure $1$). I will go through the algorithm step by step.
 
-&lt;div class=&quot;figure&quot;&gt;
-    &lt;img src=&quot;/images/t_models.jpg&quot; style=&quot;width: 60%; display: block; margin: 0 auto;&quot; /&gt;
-    &lt;div class=&quot;caption&quot;&gt;
-        &lt;span class=&quot;caption-label&quot;&gt;Figure 1.&lt;/span&gt; The original image of Tesla Model S. Photo credit: Nick Dimbleby.
+&lt;div class='figure'&gt;
+    &lt;img src=&quot;/images/t_models.jpg&quot;
+         style=&quot;width: 60%; display: block; margin: 0 auto;&quot;/&gt;
+    &lt;div class='caption'&gt;
+        &lt;span class='caption-label'&gt;Figure 1.&lt;/span&gt; The original image of Tesla Model S. Photo credit: Nick Dimbleby.
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;adaptive-median-filter&quot;&gt;Adaptive median filter&lt;/h2&gt;
+## Adaptive median filter
 
-&lt;p&gt;The Median filter is widely used in computer vision applications. It has great noise reduction capabilities for impulse noise, also called the “salt and pepper” noise. It works by moving a window over an image, where each pixel is located at the center of the window once (assume appropriate padding). Output at each pixel is the median of values within the window. As one might think, each color channel is operated separately. A problem with the median filter is that it does a poor job at preserving detail of an image while smoothing the non-impulse noise. The paper proposes an adaptive median filter to alleviate this problem. Intuitively, it additionally verifies which pixels are noise and which are not. An interested reader can find pseudocode of the adaptive median filter algorithm in the paper &lt;a class=&quot;citation&quot; href=&quot;#duttaedgedetection&quot;&gt;(Soumya Dutta, 2009)&lt;/a&gt;.&lt;/p&gt;
+The Median filter is widely used in computer vision applications. It has great noise reduction capabilities for impulse noise, also called the &quot;salt and pepper&quot; noise. It works by moving a window over an image, where each pixel is located at the center of the window once (assume appropriate padding). Output at each pixel is the median of values within the window. As one might think, each color channel is operated separately. A problem with the median filter is that it does a poor job at preserving detail of an image while smoothing the non-impulse noise. The paper proposes an adaptive median filter to alleviate this problem. Intuitively, it additionally verifies which pixels are noise and which are not. An interested reader can find pseudocode of the adaptive median filter algorithm in the paper {% cite duttaedgedetection %}. 
 
-&lt;div class=&quot;figure&quot;&gt;
-    &lt;img src=&quot;/images/t_models_median.jpg&quot; style=&quot;width: 60%; display: block; margin: 0 auto;&quot; /&gt;
-    &lt;div class=&quot;caption&quot;&gt;
-        &lt;span class=&quot;caption-label&quot;&gt;Figure 2.&lt;/span&gt; Adaptive median filter moved over the image.
+&lt;div class='figure'&gt;
+    &lt;img src=&quot;/images/t_models_median.jpg&quot;
+         style=&quot;width: 60%; display: block; margin: 0 auto;&quot;/&gt;
+    &lt;div class='caption'&gt;
+        &lt;span class='caption-label'&gt;Figure 2.&lt;/span&gt; Adaptive median filter moved over the image.
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Effect of the adaptive median filter is shown in (Figure $2$). Difference between the original and filtered image is subtle. The latter appears little smoother.&lt;/p&gt;
+Effect of the adaptive median filter is shown in (Figure $2$). Difference between the original and filtered image is subtle. The latter appears little smoother.
 
-&lt;h2 id=&quot;directional-masks&quot;&gt;Directional masks&lt;/h2&gt;
+## Directional masks
 
-&lt;p&gt;Directional color difference calculation (image gradients) is a critical part of the proposed algorithm. It locates areas where abrupt changes of RGB values occur; this is where the edges are! Roughly speaking, edges exist in four directions; horizontal, vertical, ascending and descending diagonal. The four directions are represented by masks or filters. The masks proposed by the paper are illustrated in (Figure $3$) &lt;a class=&quot;citation&quot; href=&quot;#duttaedgedetection&quot;&gt;(Soumya Dutta, 2009)&lt;/a&gt;.&lt;/p&gt;
+Directional color difference calculation (image gradients) is a critical part of the proposed algorithm. It locates areas where abrupt changes of RGB values occur; this is where the edges are! Roughly speaking, edges exist in four directions; horizontal, vertical, ascending and descending diagonal. The four directions are represented by masks or filters. The masks proposed by the paper are illustrated in (Figure $3$) {% cite duttaedgedetection %}.
 
-&lt;div class=&quot;figure&quot;&gt;
-    &lt;img src=&quot;/images/dirmasks.png&quot; style=&quot;width: 80%; display: block; margin: 0 auto;&quot; /&gt;
-    &lt;div class=&quot;caption&quot;&gt;
-        &lt;span class=&quot;caption-label&quot;&gt;Figure 3.&lt;/span&gt; Four 3x3 directional masks as proposed by the paper.
+&lt;div class='figure'&gt;
+    &lt;img src=&quot;/images/dirmasks.png&quot;
+         style=&quot;width: 80%; display: block; margin: 0 auto;&quot;/&gt;
+    &lt;div class='caption'&gt;
+        &lt;span class='caption-label'&gt;Figure 3.&lt;/span&gt; Four 3x3 directional masks as proposed by the paper.
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Before applying the masks, pixels are transformed to single valued attributes. The transformation is achieved by weighted addition of RGB components, as&lt;/p&gt;
+Before applying the masks, pixels are transformed to single valued attributes. The transformation is achieved by weighted addition of RGB components, as
 
-&lt;p&gt;$Pixel(i,j) = 2 * red(i,j) + 3 * green(i,j) + 4 * blue(i,j)$.&lt;/p&gt;
+$Pixel(i,j) = 2 * red(i,j) + 3 * green(i,j) + 4 * blue(i,j)$.
 
-&lt;p&gt;The masks are applied as a convolution with the image. The operator flips the mask horizontally and vertically (transpose). Then the flipped mask moves over the image, taking the Hadamard product (elementwise multiplication) between the current window and the mask at each location. The elements of a resulting matrix are summed up. At each location there are four results as there are four masks which are applied separately. The paper suggests to choose the largest resulting value as output. The output values build the gradient image.&lt;/p&gt;
+The masks are applied as a convolution with the image. The operator flips the mask horizontally and vertically (transpose). Then the flipped mask moves over the image, taking the Hadamard product (elementwise multiplication) between the current window and the mask at each location. The elements of a resulting matrix are summed up. At each location there are four results as there are four masks which are applied separately. The paper suggests to choose the largest resulting value as output. The output values build the gradient image.
 
-&lt;div class=&quot;figure&quot;&gt;
-    &lt;img src=&quot;/images/t_models_dirmasks.jpg&quot; style=&quot;width: 60%; display: block; margin: 0 auto;&quot; /&gt;
-    &lt;div class=&quot;caption&quot;&gt;
-        &lt;span class=&quot;caption-label&quot;&gt;Figure 4.&lt;/span&gt; Directional masks applied with convolution.
+&lt;div class='figure'&gt;
+    &lt;img src=&quot;/images/t_models_dirmasks.jpg&quot;
+         style=&quot;width: 60%; display: block; margin: 0 auto;&quot;/&gt;
+    &lt;div class='caption'&gt;
+        &lt;span class='caption-label'&gt;Figure 4.&lt;/span&gt; Directional masks applied with convolution.
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;p&gt;(Figure $4$) shows the effect of directional color difference calculation on the previously filtered image. At this point, the image background resembles static of an old television. Outlines of the Tesla and the road are there though!&lt;/p&gt;
+(Figure $4$) shows the effect of directional color difference calculation on the previously filtered image. At this point, the image background resembles static of an old television. Outlines of the Tesla and the road are there though!
 
-&lt;h2 id=&quot;thresholding&quot;&gt;Thresholding&lt;/h2&gt;
+## Thresholding
 
-&lt;p&gt;Thresholding operation is straightforward. It is responsible for producing the visual edge map from the gradient image. In the algorithm, we choose a threshold, and turn every pixel smaller than the threshold white and every pixel larger than equal to the threshold black. That’s really all it is. The paper suggests a threshold of $1.2t$, where $t$ is an average value of maximum color difference. In other words, $t$ is equal to the average value of the gradient image.&lt;/p&gt;
+Thresholding operation is straightforward. It is responsible for producing the visual edge map from the gradient image. In the algorithm, we choose a threshold, and turn every pixel smaller than the threshold white and every pixel larger than equal to the threshold black. That's really all it is. The paper suggests a threshold of $1.2t$, where $t$ is an average value of maximum color difference. In other words, $t$ is equal to the average value of the gradient image.
 
-&lt;div class=&quot;figure&quot;&gt;
-    &lt;img src=&quot;/images/t_models_threshold.jpg&quot; style=&quot;width: 60%; display: block; margin: 0 auto;&quot; /&gt;
-    &lt;div class=&quot;caption&quot;&gt;
-        &lt;span class=&quot;caption-label&quot;&gt;Figure 5.&lt;/span&gt; Thresholded image after directional masks.
+&lt;div class='figure'&gt;
+    &lt;img src=&quot;/images/t_models_threshold.jpg&quot;
+         style=&quot;width: 60%; display: block; margin: 0 auto;&quot;/&gt;
+    &lt;div class='caption'&gt;
+        &lt;span class='caption-label'&gt;Figure 5.&lt;/span&gt; Thresholded image after directional masks.
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;p&gt;(Figure $5$) shows the effect of thresholding on the gradient image. The result is already a quite decent edge map. The edges are still somewhat thick though, and there is some noise as well.&lt;/p&gt;
+(Figure $5$) shows the effect of thresholding on the gradient image. The result is already a quite decent edge map. The edges are still somewhat thick though, and there is some noise as well.
 
-&lt;h2 id=&quot;thinning&quot;&gt;Thinning&lt;/h2&gt;
+## Thinning
 
-&lt;p&gt;Thinning alleviates the problem seen in (Figure $5$) to some degree. Thinning thins the thickest edges and the thinnest edges and dots will disappear. This means it tries to keep the most important edges and get rid of the most spurious edges.&lt;/p&gt;
+Thinning alleviates the problem seen in (Figure $5$) to some degree. Thinning thins the thickest edges and the thinnest edges and dots will disappear. This means it tries to keep the most important edges and get rid of the most spurious edges.
 
-&lt;p&gt;Two masks are used in thinning (Figure $6$). One mask works in the horizontal direction and another in the vertical direction. The masks are applied as a convolution with the image.&lt;/p&gt;
+Two masks are used in thinning (Figure $6$). One mask works in the horizontal direction and another in the vertical direction. The masks are applied as a convolution with the image.
 
-&lt;div class=&quot;figure&quot;&gt;
-    &lt;img src=&quot;/images/thin_masks.png&quot; style=&quot;width: 60%; display: block; margin: 0 auto;&quot; /&gt;
-    &lt;div class=&quot;caption&quot;&gt;
-        &lt;span class=&quot;caption-label&quot;&gt;Figure 6.&lt;/span&gt; Thinning masks. The mask on the left works in the horizontal and the mask on the right works in the vertical direction.
+&lt;div class='figure'&gt;
+    &lt;img src=&quot;/images/thin_masks.png&quot;
+         style=&quot;width: 60%; display: block; margin: 0 auto;&quot;/&gt;
+    &lt;div class='caption'&gt;
+        &lt;span class='caption-label'&gt;Figure 6.&lt;/span&gt; Thinning masks. The mask on the left works in the horizontal and the mask on the right works in the vertical direction.
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div class=&quot;figure&quot;&gt;
-    &lt;img src=&quot;/images/t_models_thinned.jpg&quot; style=&quot;width: 60%; display: block; margin: 0 auto;&quot; /&gt;
-    &lt;div class=&quot;caption&quot;&gt;
-        &lt;span class=&quot;caption-label&quot;&gt;Figure 7.&lt;/span&gt; Thinned image after thresholding.
+&lt;div class='figure'&gt;
+    &lt;img src=&quot;/images/t_models_thinned.jpg&quot;
+         style=&quot;width: 60%; display: block; margin: 0 auto;&quot;/&gt;
+    &lt;div class='caption'&gt;
+        &lt;span class='caption-label'&gt;Figure 7.&lt;/span&gt; Thinned image after thresholding.
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;p&gt;(Figure $7$) is the final edge map produced by the proposed algorithm. It removes many unwanted dots and spurious edges from the previous step.&lt;/p&gt;
+(Figure $7$) is the final edge map produced by the proposed algorithm. It removes many unwanted dots and spurious edges from the previous step.
 
-&lt;h2 id=&quot;comparison-and-conclusion&quot;&gt;Comparison and conclusion&lt;/h2&gt;
+## Comparison and conclusion
 
-&lt;p&gt;&lt;a href=&quot;https://docs.opencv.org/master/da/d22/tutorial_py_canny.html&quot;&gt;OpenCV Canny&lt;/a&gt; is a popular implementation of Canny edge detection algorithm. The algorithm is one of state-of-the-art edge detectors available today. The paper uses Canny as well to compare the methods.&lt;/p&gt;
+[OpenCV Canny](https://docs.opencv.org/master/da/d22/tutorial_py_canny.html) is a popular implementation of Canny edge detection algorithm. The algorithm is one of state-of-the-art edge detectors available today. The paper uses Canny as well to compare the methods.
 
-&lt;div class=&quot;figure&quot;&gt;
-    &lt;img src=&quot;/images/comparison.png&quot; style=&quot;width: 60%; display: block; margin: 0 auto;&quot; /&gt;
-    &lt;div class=&quot;caption&quot;&gt;
-        &lt;span class=&quot;caption-label&quot;&gt;Figure 8.&lt;/span&gt; Left: Proposed algorithm, Right: OpenCV Canny.
+&lt;div class='figure'&gt;
+    &lt;img src=&quot;/images/comparison.png&quot;
+         style=&quot;width: 60%; display: block; margin: 0 auto;&quot;/&gt;
+    &lt;div class='caption'&gt;
+        &lt;span class='caption-label'&gt;Figure 8.&lt;/span&gt; Left: Proposed algorithm, Right: OpenCV Canny.
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;p&gt;(Figure $8$) summarizes the results. To conclude, the proposed algorithm is able to produce edge maps which are comparable with the state-of-the-art method. OpenCV Canny still does little better job at getting rid of unwanted dots. It also presents the edges finer. I believe these minor differences partly stem from the thresholding algorithm in OpenCV Canny. It uses &lt;a href=&quot;https://scikit-image.org/docs/dev/auto_examples/filters/plot_hysteresis.html&quot;&gt;Hysteresis Thresholding&lt;/a&gt;, which outperforms the one proposed in the paper.&lt;/p&gt;</content><author><name></name></author><summary type="html">I provide a brief review of a paper by Dutta and Chaudhuri, and compare its methods to the state-of-the-art tools.</summary></entry></feed>
+(Figure $8$) summarizes the results. To conclude, the proposed algorithm is able to produce edge maps which are comparable with the state-of-the-art method. OpenCV Canny still does little better job at getting rid of unwanted dots. It also presents the edges finer. I believe these minor differences partly stem from the thresholding algorithm in OpenCV Canny. It uses [Hysteresis Thresholding](https://scikit-image.org/docs/dev/auto_examples/filters/plot_hysteresis.html), which outperforms the one proposed in the paper.</content><author><name></name></author><summary type="html">I provide a brief review of a paper by Dutta and Chaudhuri, and compare its methods to the state-of-the-art tools.</summary></entry></feed>
