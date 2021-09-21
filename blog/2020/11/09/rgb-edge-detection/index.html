@@ -63,7 +63,7 @@ MathJax.Hub.Config({
 
 <h2 id="overview">Overview</h2>
 
-<p>Edge detection is a fundamental tool in computer vision. It reduces data, while preserving useful structural information about object boundaries. A greyscale image contains about 90% of the edge information of its RGB correspondence; the remaining 10% can be crucial. The paper proposes a method which consists of smoothing, directional color difference calculation, thresholding and thinning <a class="citation" href="#duttaedgedetection"><span style="vertical-align: super">[1]</span></a>.</p>
+<p>Edge detection is a fundamental tool in computer vision. It reduces data, while preserving useful structural information about object boundaries. A greyscale image contains about 90% of the edge information of its RGB correspondence; the remaining 10% can be crucial. The paper proposes a method which consists of smoothing, directional color difference calculation, thresholding and thinning <a class="citation" href="#duttaedgedetection">(Soumya Dutta, 2009)</a>.</p>
 
 <p>To test the algorithm, I use an image of a beautiful red Tesla Model S (Figure $1$). I will go through the algorithm step by step.</p>
 
@@ -76,7 +76,7 @@ MathJax.Hub.Config({
 
 <h2 id="adaptive-median-filter">Adaptive median filter</h2>
 
-<p>The Median filter is widely used in computer vision applications. It has great noise reduction capabilities for impulse noise, also called the “salt and pepper” noise. It works by moving a window over an image, where each pixel is located at the center of the window once (assume appropriate padding). Output at each pixel is the median of values within the window. As one might think, each color channel is operated separately. A problem with the median filter is that it does a poor job at preserving detail of an image while smoothing the non-impulse noise. The paper proposes an adaptive median filter to alleviate this problem. Intuitively, it additionally verifies which pixels are noise and which are not. An interested reader can find pseudocode of the adaptive median filter algorithm in the paper <a class="citation" href="#duttaedgedetection"><span style="vertical-align: super">[1]</span></a>.</p>
+<p>The Median filter is widely used in computer vision applications. It has great noise reduction capabilities for impulse noise, also called the “salt and pepper” noise. It works by moving a window over an image, where each pixel is located at the center of the window once (assume appropriate padding). Output at each pixel is the median of values within the window. As one might think, each color channel is operated separately. A problem with the median filter is that it does a poor job at preserving detail of an image while smoothing the non-impulse noise. The paper proposes an adaptive median filter to alleviate this problem. Intuitively, it additionally verifies which pixels are noise and which are not. An interested reader can find pseudocode of the adaptive median filter algorithm in the paper <a class="citation" href="#duttaedgedetection">(Soumya Dutta, 2009)</a>.</p>
 
 <div class="figure">
     <img src="/images/t_models_median.jpg" style="width: 60%; display: block; margin: 0 auto;" />
@@ -89,7 +89,7 @@ MathJax.Hub.Config({
 
 <h2 id="directional-masks">Directional masks</h2>
 
-<p>Directional color difference calculation (image gradients) is a critical part of the proposed algorithm. It locates areas where abrupt changes of RGB values occur; this is where the edges are! Roughly speaking, edges exist in four directions; horizontal, vertical, ascending and descending diagonal. The four directions are represented by masks or filters. The masks proposed by the paper are illustrated in (Figure $3$) <a class="citation" href="#duttaedgedetection"><span style="vertical-align: super">[1]</span></a>.</p>
+<p>Directional color difference calculation (image gradients) is a critical part of the proposed algorithm. It locates areas where abrupt changes of RGB values occur; this is where the edges are! Roughly speaking, edges exist in four directions; horizontal, vertical, ascending and descending diagonal. The four directions are represented by masks or filters. The masks proposed by the paper are illustrated in (Figure $3$) <a class="citation" href="#duttaedgedetection">(Soumya Dutta, 2009)</a>.</p>
 
 <div class="figure">
     <img src="/images/dirmasks.png" style="width: 80%; display: block; margin: 0 auto;" />
@@ -173,7 +173,7 @@ MathJax.Hub.Config({
     </div>
     <div id='bibliography'>
         <div class='wrap'>
-            <ol class="bibliography"><li><span id="duttaedgedetection">1. Soumya Dutta, B. C. (2009). <i>A color Edge Detection Algorithm in RGB Color Space</i>.</span></li></ol>
+            <ol class="bibliography"><li><span id="duttaedgedetection">Soumya Dutta, B. C. (2009). <i>A color Edge Detection Algorithm in RGB Color Space</i>.</span></li></ol>
         </div>
     </div>
 </div>
