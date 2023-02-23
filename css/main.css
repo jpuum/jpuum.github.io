@@ -24,6 +24,11 @@ h1 {
 .mono {
 	font-family: courier;
 }
+h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+	margin-top: 20px;
+}
 #index {
 	max-width: 600px;
 	margin: 70px auto 100px auto;
